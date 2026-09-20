@@ -96,3 +96,31 @@ class ProfileAdmin(admin.ModelAdmin):
         "user__email",
         "user__username",
     )
+
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "user",
+        "full_name",
+        "city",
+        "province",
+        "address_type",
+        "is_default",
+        "created_at",
+    )
+
+    list_filter = (
+        "address_type",
+        "is_default",
+        "province",
+        "city",
+    )
+
+    search_fields = (
+        "user__email",
+        "full_name",
+        "phone",
+        "city",
+        "address_line_1",
+    )

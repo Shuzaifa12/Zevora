@@ -186,3 +186,58 @@ class AttributeAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         "slug": ("name",)
     }
+
+@admin.register(Wishlist)
+class WishlistAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "user",
+        "product",
+        "created_at",
+    )
+
+    search_fields = (
+        "user__email",
+        "product__name",
+    )
+
+    list_filter = (
+        "created_at",
+    )
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "user",
+        "total_items",
+        "subtotal",
+        "created_at",
+        "updated_at",
+    )
+
+    search_fields = (
+        "user__email",
+        "user__username",
+    )
+
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "cart",
+        "product",
+        "quantity",
+        "unit_price",
+        "subtotal",
+        "created_at",
+    )
+
+    search_fields = (
+        "cart__user__email",
+        "product__name",
+    )
+
+    list_filter = (
+        "created_at",
+    )

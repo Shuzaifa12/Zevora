@@ -1,22 +1,47 @@
 from django.db import models
+from django.conf import settings
 
+
+# ============================================================
+# CATEGORY
+# ============================================================
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=120, unique=True)
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+    )
 
-    description = models.TextField(blank=True)
+    slug = models.SlugField(
+        max_length=120,
+        unique=True,
+    )
+
+    description = models.TextField(
+        blank=True,
+    )
+
     image = models.ImageField(
         upload_to="categories/",
         blank=True,
         null=True,
     )
 
-    is_active = models.BooleanField(default=True)
-    is_featured = models.BooleanField(default=False)
+    is_active = models.BooleanField(
+        default=True,
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    is_featured = models.BooleanField(
+        default=False,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ["name"]
@@ -26,32 +51,54 @@ class Category(models.Model):
         return self.name
 
 
+# ============================================================
+# SUB CATEGORY
+# ============================================================
+
 class SubCategory(models.Model):
+
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
         related_name="subcategories",
     )
 
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=120)
+    name = models.CharField(
+        max_length=100,
+    )
 
-    description = models.TextField(blank=True)
+    slug = models.SlugField(
+        max_length=120,
+    )
+
+    description = models.TextField(
+        blank=True,
+    )
+
     image = models.ImageField(
         upload_to="subcategories/",
         blank=True,
         null=True,
     )
 
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(
+        default=True,
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ["name"]
+
         verbose_name = "Sub Category"
         verbose_name_plural = "Sub Categories"
+
         constraints = [
             models.UniqueConstraint(
                 fields=["category", "slug"],
@@ -63,21 +110,43 @@ class SubCategory(models.Model):
         return f"{self.category.name} → {self.name}"
 
 
-class Brand(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=120, unique=True)
+# ============================================================
+# BRAND
+# ============================================================
 
-    description = models.TextField(blank=True)
+class Brand(models.Model):
+
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+    )
+
+    slug = models.SlugField(
+        max_length=120,
+        unique=True,
+    )
+
+    description = models.TextField(
+        blank=True,
+    )
+
     logo = models.ImageField(
         upload_to="brands/",
         blank=True,
         null=True,
     )
 
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(
+        default=True,
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ["name"]
@@ -86,9 +155,20 @@ class Brand(models.Model):
         return self.name
 
 
+# ============================================================
+# PRODUCT
+# ============================================================
+
 class Product(models.Model):
-    name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=220, unique=True)
+
+    name = models.CharField(
+        max_length=200,
+    )
+
+    slug = models.SlugField(
+        max_length=220,
+        unique=True,
+    )
 
     sku = models.CharField(
         max_length=100,
@@ -136,23 +216,57 @@ class Product(models.Model):
         null=True,
     )
 
-    is_active = models.BooleanField(default=True)
-    is_featured = models.BooleanField(default=False)
-    is_new = models.BooleanField(default=False)
-    is_bestseller = models.BooleanField(default=False)
-    is_trending = models.BooleanField(default=False)
+    stock = models.PositiveIntegerField(
+        default=0,
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(
+        default=True,
+    )
+
+    is_featured = models.BooleanField(
+        default=False,
+    )
+
+    is_new = models.BooleanField(
+        default=False,
+    )
+
+    is_bestseller = models.BooleanField(
+        default=False,
+    )
+
+    is_trending = models.BooleanField(
+        default=False,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=["category"]),
-            models.Index(fields=["brand"]),
-            models.Index(fields=["is_active"]),
-            models.Index(fields=["is_featured"]),
-            models.Index(fields=["is_bestseller"]),
+            models.Index(
+                fields=["category"]
+            ),
+            models.Index(
+                fields=["brand"]
+            ),
+            models.Index(
+                fields=["is_active"]
+            ),
+            models.Index(
+                fields=["is_featured"]
+            ),
+            models.Index(
+                fields=["is_bestseller"]
+            ),
         ]
 
     def __str__(self):
@@ -160,12 +274,17 @@ class Product(models.Model):
 
     @property
     def current_price(self):
-        if self.sale_price is not None:
+        if (
+            self.sale_price is not None
+            and self.sale_price < self.price
+        ):
             return self.sale_price
+
         return self.price
 
     @property
     def discount_percentage(self):
+
         if (
             self.sale_price is None
             or self.price <= 0
@@ -181,7 +300,12 @@ class Product(models.Model):
         return round(discount, 2)
 
 
+# ============================================================
+# PRODUCT IMAGE
+# ============================================================
+
 class ProductImage(models.Model):
+
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
@@ -210,20 +334,30 @@ class ProductImage(models.Model):
     )
 
     class Meta:
-        ordering = ["display_order", "-created_at"]
+        ordering = [
+            "display_order",
+            "-created_at",
+        ]
 
     def __str__(self):
         return f"{self.product.name} Image"
 
 
+# ============================================================
+# PRODUCT VARIANT
+# ============================================================
+
 class ProductVariant(models.Model):
+
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
         related_name="variants",
     )
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(
+        max_length=100,
+    )
 
     sku = models.CharField(
         max_length=100,
@@ -266,14 +400,45 @@ class ProductVariant(models.Model):
     def __str__(self):
         return f"{self.product.name} - {self.name}"
 
+    @property
+    def current_price(self):
+
+        if (
+            self.sale_price is not None
+            and self.sale_price < self.price # type: ignore
+        ):
+            return self.sale_price
+
+        return self.price
+
+
+# ============================================================
+# ATTRIBUTE
+# ============================================================
+
 class Attribute(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=120, unique=True)
 
-    is_active = models.BooleanField(default=True)
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(
+        max_length=120,
+        unique=True,
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ["name"]
@@ -282,7 +447,12 @@ class Attribute(models.Model):
         return self.name
 
 
+# ============================================================
+# PRODUCT ATTRIBUTE
+# ============================================================
+
 class ProductAttribute(models.Model):
+
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
@@ -297,18 +467,165 @@ class ProductAttribute(models.Model):
 
     value = models.TextField()
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ["attribute__name"]
 
         constraints = [
             models.UniqueConstraint(
-                fields=["product", "attribute"],
+                fields=[
+                    "product",
+                    "attribute",
+                ],
                 name="unique_product_attribute",
             )
         ]
 
     def __str__(self):
         return f"{self.product.name} - {self.attribute.name}"
+
+
+# ============================================================
+# WISHLIST
+# ============================================================
+
+class Wishlist(models.Model):
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="wishlists",
+    )
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="wishlisted_by",
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "user",
+                    "product",
+                ],
+                name="unique_user_product_wishlist",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.user.email} - {self.product.name}"
+
+
+# ============================================================
+# CART
+# ============================================================
+
+class Cart(models.Model):
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="cart",
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    def __str__(self):
+        return f"Cart - {self.user.email}"
+
+    @property
+    def total_items(self):
+
+        return sum(
+            item.quantity
+            for item in self.cart_items.all() # type: ignore
+        )
+
+    @property
+    def subtotal(self):
+
+        return sum(
+            (
+                item.subtotal
+                for item in self.cart_items.all() # type: ignore
+            ),
+            0,
+        )
+
+
+# ============================================================
+# CART ITEM
+# ============================================================
+
+class CartItem(models.Model):
+
+    cart = models.ForeignKey(
+        Cart,
+        on_delete=models.CASCADE,
+        related_name="cart_items",
+    )
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="cart_items",
+    )
+
+    quantity = models.PositiveIntegerField(
+        default=1,
+    )
+
+    unit_price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "cart",
+                    "product",
+                ],
+                name="unique_cart_product",
+            )
+        ]
+
+    @property
+    def subtotal(self):
+        return self.unit_price * self.quantity
+
+    def __str__(self):
+        return (
+            f"{self.product.name} "
+            f"x {self.quantity}"
+        )
