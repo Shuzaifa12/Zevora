@@ -49,14 +49,20 @@ class Order(models.Model):
     # ========================================================
 
     PAYMENT_COD = "cod"
-    PAYMENT_CARD = "card"
     PAYMENT_ONLINE = "online"
 
     PAYMENT_METHOD_CHOICES = [
         (PAYMENT_COD, "Cash on Delivery"),
-        (PAYMENT_CARD, "Card"),
         (PAYMENT_ONLINE, "Online Payment"),
     ]
+
+
+    CURRENCY_PKR = "PKR"
+
+    CURRENCY_CHOICES = [
+        (CURRENCY_PKR, "Pakistani Rupee"),
+    ]
+
 
     # ========================================================
     # BASIC ORDER INFORMATION
@@ -94,6 +100,13 @@ class Order(models.Model):
         max_length=20,
         choices=PAYMENT_METHOD_CHOICES,
         default=PAYMENT_COD,
+    )
+
+    currency = models.CharField(
+        max_length=3,
+        choices=CURRENCY_CHOICES,
+        default=CURRENCY_PKR,
+        editable=False,
     )
 
     transaction_id = models.CharField(
@@ -354,3 +367,10 @@ class OrderItem(models.Model):
         )
 
         super().save(*args, **kwargs)
+
+
+exchange_rate = models.DecimalField(
+    max_digits=18,
+    decimal_places=8,
+    default=Decimal("1.00000000"),
+)

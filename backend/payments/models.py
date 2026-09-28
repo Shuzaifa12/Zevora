@@ -31,13 +31,11 @@ class Payment(models.Model):
     # ========================================================
 
     PROVIDER_COD = "cod"
-    PROVIDER_CARD = "card"
     PROVIDER_ONLINE = "online"
 
     PROVIDER_CHOICES = [
         (PROVIDER_COD, "Cash on Delivery"),
-        (PROVIDER_CARD, "Card"),
-        (PROVIDER_ONLINE, "Online"),
+        (PROVIDER_ONLINE, "Online Card Payment"),
     ]
 
     # ========================================================
@@ -78,7 +76,7 @@ class Payment(models.Model):
     )
 
     currency = models.CharField(
-        max_length=10,
+        max_length=3,
         default="PKR",
     )
 

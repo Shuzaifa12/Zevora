@@ -137,14 +137,7 @@ class CreateOrderView(APIView):
         # SHIPPING FEE
         # ----------------------------------------------------
 
-        shipping_fee = Decimal(
-            str(
-                request.data.get(
-                    "shipping_fee",
-                    "0.00",
-                )
-            )
-        )
+        shipping_fee = Decimal("0.00")
 
         if shipping_fee < 0:
             return Response(
@@ -158,14 +151,7 @@ class CreateOrderView(APIView):
         # DISCOUNT
         # ----------------------------------------------------
 
-        discount = Decimal(
-            str(
-                request.data.get(
-                    "discount",
-                    "0.00",
-                )
-            )
-        )
+        discount = Decimal("0.00")
 
         if discount < 0:
             return Response(
@@ -261,6 +247,8 @@ class CreateOrderView(APIView):
 
             payment_method=payment_method,
             payment_status=Order.PAYMENT_PENDING,
+
+            currency=Order.CURRENCY_PKR,
 
             subtotal=subtotal,
             discount=discount,

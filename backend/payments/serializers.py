@@ -68,7 +68,10 @@ class CreatePaymentSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
 
     provider = serializers.ChoiceField(
-        choices=Payment.PROVIDER_CHOICES,
+        choices=[
+            (Payment.PROVIDER_COD, "Cash on Delivery"),
+            (Payment.PROVIDER_ONLINE, "Online Payment"),
+        ]
     )
 
     def validate_order_id(self, value):

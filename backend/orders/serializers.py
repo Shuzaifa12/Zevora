@@ -51,6 +51,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "payment_status",
             "payment_method",
             "transaction_id",
+            "currency",
 
             "subtotal",
             "discount",
@@ -90,6 +91,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
             "payment_status",
             "transaction_id",
+            "currency",
 
             "subtotal",
             "discount",
@@ -129,6 +131,7 @@ class OrderListSerializer(serializers.ModelSerializer):
             "status",
             "payment_method",
             "payment_status",
+            "currency",
             "subtotal",
             "shipping_fee",
             "tax",

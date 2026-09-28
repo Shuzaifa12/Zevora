@@ -58,7 +58,6 @@ class PaymentService:
 
         allowed_providers = [
             Payment.PROVIDER_COD,
-            Payment.PROVIDER_CARD,
             Payment.PROVIDER_ONLINE,
         ]
 
@@ -99,7 +98,7 @@ class PaymentService:
             provider=provider,
             status=Payment.STATUS_PENDING,
             amount=order.total,
-            currency="PKR",
+            currency=order.currency,
             gateway_response={
                 "message": "Payment record created.",
             },
@@ -108,9 +107,6 @@ class PaymentService:
         # Keep Order.payment_method synchronized
         if provider == Payment.PROVIDER_COD:
             order.payment_method = Order.PAYMENT_COD
-
-        elif provider == Payment.PROVIDER_CARD:
-            order.payment_method = Order.PAYMENT_CARD
 
         elif provider == Payment.PROVIDER_ONLINE:
             order.payment_method = Order.PAYMENT_ONLINE
